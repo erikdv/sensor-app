@@ -1,10 +1,13 @@
 package nl.hva.erik.sensor;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -40,6 +43,27 @@ public class MainActivity extends AppCompatActivity {
 
         lv = (ListView) findViewById(R.id.list);
         new GetSensors().execute();
+
+        Button button = (Button) findViewById(R.id.available_sensors_button);
+        final Intent intent = new Intent(this, SensorOverviewActivity.class);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                startActivity(intent);
+            }
+        });
+
+        Button temperatureButton = (Button) findViewById(R.id.temp_sensor_button);
+        final Intent temperatureIntent = new Intent(this, TemperatureActivity.class);
+        temperatureButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                startActivity(temperatureIntent);
+            }
+        });
+
+
+
+
+
     }
 
     private class GetSensors extends AsyncTask<Void, Void, Void> {

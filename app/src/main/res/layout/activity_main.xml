@@ -9,4 +9,19 @@
         android:id="@+id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Avai"
+        android:id="@+id/available_sensors_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temperature sensor"
+        android:id="@+id/temp_sensor_button"
+        android:layout_alignTop="@+id/available_sensors_button"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
