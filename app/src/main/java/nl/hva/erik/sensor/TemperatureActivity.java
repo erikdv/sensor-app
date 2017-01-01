@@ -19,7 +19,7 @@ public class TemperatureActivity extends Activity implements SensorEventListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_temperature);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensor= sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        sensor= sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
         Log.d("TEMP", Float.toString(sensor.getPower()) );
 
