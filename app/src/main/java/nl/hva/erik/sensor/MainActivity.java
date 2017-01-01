@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         Button temperatureButton = (Button) findViewById(R.id.temp_sensor_button);
-        final Intent temperatureIntent = new Intent(this, TemperatureActivity.class);
+        final Intent temperatureIntent = new Intent(this, Sensor1Activity.class);
         temperatureButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 startActivity(temperatureIntent);

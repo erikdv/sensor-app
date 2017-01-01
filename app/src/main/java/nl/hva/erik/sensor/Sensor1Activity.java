@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 
-public class TemperatureActivity extends Activity implements SensorEventListener {
+public class Sensor1Activity extends Activity implements SensorEventListener {
 
 
     private SensorManager sensorManager;
