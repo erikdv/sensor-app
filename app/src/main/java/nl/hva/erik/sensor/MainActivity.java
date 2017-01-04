@@ -24,14 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
     private String TAG = MainActivity.class.getSimpleName();
 
-    private ProgressDialog pDialog;
-    private ListView lv;
+    private ProgressDialog progressDialog;
+    private ListView listView;
 
-    // URL to get contacts JSON
     private  String url;
-    //
 
-    ArrayList<HashMap<String, String>> contactList;
+    ArrayList<HashMap<String, Object>> measurementList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        contactList = new ArrayList<>();
+        measurementList = new ArrayList<>();
 
-        lv = (ListView) findViewById(R.id.list);
+        listView = (ListView) findViewById(R.id.list);
         new GetSensors().execute();
 
         Button button = (Button) findViewById(R.id.available_sensors_button);
@@ -61,9 +59,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
     }
 
     private class GetSensors extends AsyncTask<Void, Void, Void> {
@@ -72,47 +67,47 @@ public class MainActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             // Showing progress dialog
-            pDialog = new ProgressDialog(MainActivity.this);
-            pDialog.setMessage("Please wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage("Please wait...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
 
         }
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            HttpHandler sh = new HttpHandler();
+            HttpHandler httpHandler = new HttpHandler();
 
             // Making a request to url and getting response
-            String jsonStr = sh.makeServiceCall(url);
+            String jsonResponse = httpHandler.doGetRequest(url);
 
-            Log.e(TAG, "Response from url: " + jsonStr);
+            Log.e(TAG, "Response from url: " + jsonResponse);
 
-            if (jsonStr != null) {
+            if (jsonResponse != null) {
                 try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    JSONObject jsonObject = new JSONObject(jsonResponse);
 
                     // Getting JSON Array node
-                    JSONArray contacts = jsonObj.getJSONArray("sensors");
+                    JSONArray measurements = jsonObject.getJSONArray("measurements");
 
                     // looping through All Contacts
-                    for (int i = 0; i < contacts.length(); i++) {
-                        JSONObject c = contacts.getJSONObject(i);
+                    for (int i = 0; i < measurements.length(); i++) {
+                        JSONObject measurement = measurements.getJSONObject(i);
 
-                        String id = c.getString("id");
-                        String name = c.getString("content");
+                        int id =  measurement.getInt("timestamp");
+                        long name = measurement.getLong("value");
 
 
                         // tmp hash map for single contact
-                        HashMap<String, String> contact = new HashMap<>();
+                        HashMap<String, Object> measurementMap = new HashMap<>();
 
                         // adding each child node to HashMap key => value
-                        contact.put("id", id);
-                        contact.put("content", name);
+                        measurementMap.put("timestamp", id);
+                        measurementMap.put("value", name);
 
 
                         // adding contact to contact list
-                        contactList.add(contact);
+                        measurementList.add(measurementMap);
                     }
                 } catch (final JSONException e) {
                     Log.e(TAG, "Json parsing error: " + e.getMessage());
@@ -148,16 +143,16 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             // Dismiss the progress dialog
-            if (pDialog.isShowing())
-                pDialog.dismiss();
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
             /**
              * Updating parsed JSON data into ListView
              * */
             ListAdapter adapter = new SimpleAdapter(
-                    MainActivity.this, contactList,
-                    R.layout.list_item, new String[]{"content", "id"}, new int[]{R.id.content, R.id.id});
+                    MainActivity.this, measurementList,
+                    R.layout.list_item, new String[]{"timestamp", "value"}, new int[]{R.id.content, R.id.id});
 
-            lv.setAdapter(adapter);
+            listView.setAdapter(adapter);
         }
 
     }
