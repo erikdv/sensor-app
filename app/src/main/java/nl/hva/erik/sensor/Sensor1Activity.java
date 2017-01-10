@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -27,6 +28,8 @@ public class Sensor1Activity extends Activity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor sensor;
     JSONObject measurement;
+    JSONObject measurementMap;
+    String sensor1Name;
 
     private String TAG = MainActivity.class.getSimpleName();
 
@@ -50,19 +53,28 @@ public class Sensor1Activity extends Activity implements SensorEventListener {
         listView = (ListView) findViewById(R.id.listSensor1);
         new GetMeasurementsSensor1().execute();
 
+        sensor1Name = sensor.getName();
         Float sensor1Value = sensor.getPower();
-        Log.d("GRAVITY", Float.toString(sensor1Value) );
+        Log.d("SENSOR:"+ sensor1Name , Float.toString(sensor1Value) );
         measurement = new JSONObject();
+        measurementMap = new JSONObject();
 
         try {
             Long timestamp = System.currentTimeMillis()/1000;
             measurement.put("timestamp",  timestamp);
             measurement.put("value", sensor1Value);
+            measurementMap.put(sensor1Name, measurement);
         } catch (JSONException je) {
             je.printStackTrace();
         }
 
         new PostMeasurement().execute();
+
+        TextView sensorNameValue = (TextView) findViewById(R.id.sensorNameValue);
+        sensorNameValue.setText(sensor1Name);
+
+        TextView sensorValue = (TextView) findViewById(R.id.sensorValue);
+        sensorValue.setText(Float.toString(sensor1Value));
 
     }
 
@@ -93,7 +105,7 @@ public class Sensor1Activity extends Activity implements SensorEventListener {
                     JSONObject jsonObject = new JSONObject(jsonResponse);
 
                     // Getting JSON Array node
-                    JSONArray measurements = jsonObject.getJSONArray("measurements");
+                    JSONArray measurements = jsonObject.getJSONArray(sensor1Name);
 
                     // looping through All Contacts
                     for (int i = 0; i < measurements.length(); i++) {
@@ -179,15 +191,13 @@ public class Sensor1Activity extends Activity implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
     }
 
-
     private class PostMeasurement extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... arg0) {
 
             HttpHandler httpHandler = new HttpHandler();
-            httpHandler.doPostRequest(url, measurement);
-            String jsonResponse = httpHandler.doPostRequest(url, measurement);
+            String jsonResponse = httpHandler.doPostRequest(url, measurementMap);
             Log.e(TAG, "Response from url: " + jsonResponse);
 
             return null;

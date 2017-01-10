@@ -66,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/sensorHistoryLabel" />
-        
+
         <ListView
             android:id="@+id/listSensor1"
             android:layout_width="fill_parent"
