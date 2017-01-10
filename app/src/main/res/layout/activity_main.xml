@@ -5,23 +5,33 @@
     android:layout_height="match_parent"
     tools:context="nl.hva.erik.sensor.MainActivity">
 
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Avai"
-        android:id="@+id/available_sensors_button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Temperature sensor"
-        android:id="@+id/temp_sensor_button"
-        android:layout_alignTop="@+id/available_sensors_button"
-        android:layout_alignParentEnd="true" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Available sensors"
+            android:id="@+id/available_sensors_button"
+            android:layout_below="@id/available_sensors_button"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="77dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gravity sensor"
+            android:id="@+id/sensor1_button"
+            android:layout_alignTop="@+id/available_sensors_button"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="77dp"/>
+
+
+    </LinearLayout>
 </RelativeLayout>
