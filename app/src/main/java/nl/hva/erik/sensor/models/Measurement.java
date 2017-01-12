@@ -8,12 +8,12 @@ import java.sql.Timestamp;
 public class Measurement {
 
     private Timestamp timestamp;
-    private long value;
+    private float value;
 
     public Measurement() {
 
     }
-    public Measurement(Timestamp timestamp,  long value) {
+    public Measurement(Timestamp timestamp,  float value) {
         this.timestamp = timestamp ;
         this.value = value;
     }
@@ -25,7 +25,7 @@ public class Measurement {
         this.timestamp =  timestamp;
     }
 
-    public long getValue() {
+    public float getValue() {
         return value;
     }
 

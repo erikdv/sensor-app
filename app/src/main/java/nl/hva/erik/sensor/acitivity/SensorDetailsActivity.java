@@ -161,7 +161,7 @@ public class SensorDetailsActivity extends Activity {
                         JSONObject measurement = measurements.getJSONObject(i);
 
                         long timestamp =  measurement.getLong("timestamp");
-                        long name = measurement.getLong("value");
+                        float value = Float.parseFloat(measurement.getString("value"));
 
 
                         // tmp hash map for single contact
@@ -169,9 +169,9 @@ public class SensorDetailsActivity extends Activity {
 
                         // adding each child node to HashMap key => value
                         measurementMap.put("timestamp", timestamp);
-                        measurementMap.put("value", name);
-    
-                        Measurement test = new Measurement(new Timestamp(timestamp), name);
+                        measurementMap.put("value", value);
+
+                        Measurement test = new Measurement(new Timestamp(timestamp), value);
                         measurementsTest.add(test);
                         // adding contact to contact list
                         measurementList.add(measurementMap);
