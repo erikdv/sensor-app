@@ -1,4 +1,4 @@
-package nl.hva.erik.sensor;
+package nl.hva.erik.sensor.acitivity;
 
 
 import java.util.ArrayList;

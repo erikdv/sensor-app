@@ -1,4 +1,4 @@
-package nl.hva.erik.sensor;
+package nl.hva.erik.sensor.acitivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,15 +17,15 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import nl.hva.erik.sensor.helper.HttpHandler;
+import nl.hva.erik.sensor.R;
 
-public class Sensor2Activity extends Activity {
+public class SensorDetailsActivity extends Activity {
 
     TextView label;
     TextView status;
@@ -48,45 +48,42 @@ public class Sensor2Activity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sensor2);
+        setContentView(R.layout.activity_sensor_details);
 
         url = getString(R.string.backend_url);
 
-        listView = (ListView) findViewById(R.id.listSensor2);
+        listView = (ListView) findViewById(R.id.listSensorDetails);
 
         measurementList = new ArrayList<>();
         measurement = new JSONObject();
         measurementMap = new JSONObject();
 
-
         label = (TextView)findViewById(R.id.sensorAvailable);
         status = (TextView)findViewById(R.id.sensorValue);
 
-        new Sensor2Activity.GetMeasurementsSensor2().execute();
+        new GetMeasurementsSensor().execute();
 
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         Intent intent = getIntent();
         sensorType = intent.getIntExtra("sensor", -1);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         sensor = sensorManager.getDefaultSensor(sensorType);
         sensor2Name = sensor.getName();
         if(sensor != null){
-            label.setText("Light sensor available");
+            label.setText(sensor.getName());
             sensorManager.registerListener(
-                    LightSensorListener,
+                    sensorEventListener,
                     sensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
 
         }else{
-            label.setText("Light sensor NOT available");
+            label.setText("Sensor not found");
         }
 
-        final Button button = (Button) findViewById(R.id.storeValueSensor2);
+        final Button button = (Button) findViewById(R.id.storeValueSensor);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
-
                     Long timestamp = System.currentTimeMillis()/1000;
                     measurement.put("timestamp",  timestamp);
                     measurement.put("value", sensor2Value);
@@ -94,14 +91,14 @@ public class Sensor2Activity extends Activity {
                 } catch (JSONException je) {
                     je.printStackTrace();
                 }
-                new Sensor2Activity.PostMeasurement().execute();
+                new SensorDetailsActivity.PostMeasurement().execute();
             }
 
         });
 
     }
 
-    private final SensorEventListener LightSensorListener
+    private final SensorEventListener sensorEventListener
             = new SensorEventListener(){
 
         @Override
@@ -117,13 +114,13 @@ public class Sensor2Activity extends Activity {
         }
     };
 
-    private class GetMeasurementsSensor2 extends AsyncTask<Void, Void, Void> {
+    private class GetMeasurementsSensor extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // Showing progress dialog
-            progressDialog = new ProgressDialog(Sensor2Activity.this);
+            progressDialog = new ProgressDialog(SensorDetailsActivity.this);
             progressDialog.setMessage("Please wait...");
             progressDialog.setCancelable(false);
             progressDialog.show();
@@ -206,7 +203,7 @@ public class Sensor2Activity extends Activity {
              * Updating parsed JSON data into ListView
              * */
             ListAdapter adapter = new SimpleAdapter(
-                    Sensor2Activity.this, measurementList,
+                    SensorDetailsActivity.this, measurementList,
                     R.layout.list_item, new String[]{"timestamp", "value"}, new int[]{R.id.content, R.id.id});
 
             listView.setAdapter(adapter);
@@ -224,7 +221,6 @@ public class Sensor2Activity extends Activity {
 
             return null;
         }
-
     }
 
 }

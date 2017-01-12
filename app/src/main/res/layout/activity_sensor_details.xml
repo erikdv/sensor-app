@@ -26,13 +26,11 @@
             android:text="Store value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/storeValueSensor2" />
+            android:id="@+id/storeValueSensor" />
 
 
 
     </LinearLayout>
-
-
 
 
     <LinearLayout
@@ -53,7 +51,7 @@
         android:id="@+id/sensorHistoryLabel" />
 
     <ListView
-        android:id="@+id/listSensor2"
+        android:id="@+id/listSensorDetails"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
