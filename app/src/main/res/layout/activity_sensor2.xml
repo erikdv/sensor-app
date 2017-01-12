@@ -4,15 +4,58 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <TextView
         android:id="@+id/sensorAvailable"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="127dp">
+
+        <TextView
+            android:id="@+id/sensorValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="50dp"/>
+
+        <Button
+            android:text="Store value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/storeValueSensor2" />
+
+
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="332dp"
+        android:layout_height="41dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="104dp">
+
+
+    </LinearLayout>
+
     <TextView
-        android:id="@+id/sensorValue"
+        android:text="Measurement history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sensorHistoryLabel" />
+
+    <ListView
+        android:id="@+id/listSensor2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="50dp"/>
-
+        android:layout_alignParentTop="true" />
 </LinearLayout>
+
