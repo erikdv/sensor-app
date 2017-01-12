@@ -14,7 +14,7 @@ public class Measurement {
 
     }
     public Measurement(Timestamp timestamp,  long value) {
-        this.timestamp = timestamp;
+        this.timestamp = timestamp ;
         this.value = value;
     }
 

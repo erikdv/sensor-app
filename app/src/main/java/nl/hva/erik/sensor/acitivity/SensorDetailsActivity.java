@@ -11,11 +11,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONArray;
@@ -162,8 +159,8 @@ public class SensorDetailsActivity extends Activity {
                     for (int i = 0; i < measurements.length(); i++) {
 
                         JSONObject measurement = measurements.getJSONObject(i);
-                        
-                        int id =  measurement.getInt("timestamp");
+
+                        long timestamp =  measurement.getLong("timestamp");
                         long name = measurement.getLong("value");
 
 
@@ -171,10 +168,10 @@ public class SensorDetailsActivity extends Activity {
                         HashMap<String, Object> measurementMap = new HashMap<>();
 
                         // adding each child node to HashMap key => value
-                        measurementMap.put("timestamp", id);
+                        measurementMap.put("timestamp", timestamp);
                         measurementMap.put("value", name);
-
-                        Measurement test = new Measurement(new Timestamp(id), name);
+    
+                        Measurement test = new Measurement(new Timestamp(timestamp), name);
                         measurementsTest.add(test);
                         // adding contact to contact list
                         measurementList.add(measurementMap);
