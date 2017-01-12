@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -20,16 +21,22 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import nl.hva.erik.sensor.adapter.MeasurementAdapter;
 import nl.hva.erik.sensor.helper.HttpHandler;
 import nl.hva.erik.sensor.R;
+import nl.hva.erik.sensor.models.Measurement;
 
 public class SensorDetailsActivity extends Activity {
 
     TextView label;
     TextView status;
     String sensor2Name;
+    ArrayList<Measurement> measurementsTest = new ArrayList<Measurement>();
     JSONObject measurement;
     JSONObject measurementMap;
     Float sensor2Value;
@@ -42,6 +49,8 @@ public class SensorDetailsActivity extends Activity {
     Sensor sensor;
 
     private  String url;
+
+    MeasurementAdapter adapter;
 
     ArrayList<HashMap<String, Object>> measurementList;
 
@@ -60,6 +69,9 @@ public class SensorDetailsActivity extends Activity {
 
         label = (TextView)findViewById(R.id.sensorAvailable);
         status = (TextView)findViewById(R.id.sensorValue);
+
+
+        adapter = new MeasurementAdapter(this, measurementsTest);
 
         new GetMeasurementsSensor().execute();
 
@@ -84,7 +96,7 @@ public class SensorDetailsActivity extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
-                    Long timestamp = System.currentTimeMillis()/1000;
+                    Long timestamp = System.currentTimeMillis();
                     measurement.put("timestamp",  timestamp);
                     measurement.put("value", sensor2Value);
                     measurementMap.put(sensor2Name, measurement);
@@ -92,6 +104,7 @@ public class SensorDetailsActivity extends Activity {
                     je.printStackTrace();
                 }
                 new SensorDetailsActivity.PostMeasurement().execute();
+
             }
 
         });
@@ -137,17 +150,19 @@ public class SensorDetailsActivity extends Activity {
             Log.e(TAG, "Response from url: " + jsonResponse);
 
             if (jsonResponse != null) {
+                measurementsTest.clear();
                 try {
                     JSONObject jsonObject = new JSONObject(jsonResponse);
 
                     // Getting JSON Array node
                    JSONArray measurements = jsonObject.getJSONArray(sensor2Name);
-                 //   JSONArray measurements = jsonObject.getJSONArray("Gravity");
+                  //  JSONArray measurements = jsonObject.getJSONArray("Gravity");
 
                     // looping through All Contacts
                     for (int i = 0; i < measurements.length(); i++) {
-                        JSONObject measurement = measurements.getJSONObject(i);
 
+                        JSONObject measurement = measurements.getJSONObject(i);
+                        
                         int id =  measurement.getInt("timestamp");
                         long name = measurement.getLong("value");
 
@@ -159,7 +174,8 @@ public class SensorDetailsActivity extends Activity {
                         measurementMap.put("timestamp", id);
                         measurementMap.put("value", name);
 
-
+                        Measurement test = new Measurement(new Timestamp(id), name);
+                        measurementsTest.add(test);
                         // adding contact to contact list
                         measurementList.add(measurementMap);
                     }
@@ -202,10 +218,9 @@ public class SensorDetailsActivity extends Activity {
             /**
              * Updating parsed JSON data into ListView
              * */
-            ListAdapter adapter = new SimpleAdapter(
-                    SensorDetailsActivity.this, measurementList,
-                    R.layout.list_item, new String[]{"timestamp", "value"}, new int[]{R.id.content, R.id.id});
 
+
+            adapter.notifyDataSetChanged();
             listView.setAdapter(adapter);
         }
 
@@ -219,8 +234,25 @@ public class SensorDetailsActivity extends Activity {
             String jsonResponse = httpHandler.doPostRequest(url, measurementMap);
             Log.e(TAG, "Response from url: " + jsonResponse);
 
+
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            // Dismiss the progress dialog
+            if (progressDialog.isShowing())
+                progressDialog.dismiss();
+            /**
+             * Updating parsed JSON data into ListView
+             * */
+
+            new GetMeasurementsSensor().execute();
+            adapter.notifyDataSetChanged();
+
+        }
+
     }
 
 }
