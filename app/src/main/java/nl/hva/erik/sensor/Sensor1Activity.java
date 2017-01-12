@@ -46,7 +46,8 @@ public class Sensor1Activity extends Activity implements SensorEventListener {
         url = getString(R.string.backend_url);
         setContentView(R.layout.activity_sensor1);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sensor= sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+      //  sensor= sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        sensor= sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         measurementList = new ArrayList<>();
 

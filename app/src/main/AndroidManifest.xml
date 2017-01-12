@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SensorOverviewActivity" />
-        <activity android:name=".Sensor1Activity"></activity>
+        <activity android:name=".Sensor1Activity" />
+        <activity android:name=".Sensor2Activity"></activity>
     </application>
 
 </manifest>

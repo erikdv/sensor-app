@@ -26,11 +26,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button temperatureButton = (Button) findViewById(R.id.sensor1_button);
+        Button sensor1Button = (Button) findViewById(R.id.sensor1_button);
         final Intent sensor1Intent = new Intent(this, Sensor1Activity.class);
-        temperatureButton.setOnClickListener(new View.OnClickListener() {
+        sensor1Button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 startActivity(sensor1Intent);
+            }
+        });
+
+        Button sensor2Button = (Button) findViewById(R.id.sensor2_button);
+        final Intent sensor2Intent = new Intent(this, Sensor2Activity.class);
+        sensor2Button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                startActivity(sensor2Intent);
             }
         });
     }

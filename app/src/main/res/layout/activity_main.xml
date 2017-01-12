@@ -32,6 +32,14 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="77dp"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Light sensor"
+            android:id="@+id/sensor2_button"
+            android:layout_alignTop="@+id/sensor1_button"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="77dp"/>
 
     </LinearLayout>
 </RelativeLayout>
